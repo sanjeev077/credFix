@@ -28,6 +28,28 @@ public class Main {
     tier billing can be done using chain of responsibility
      */
 
+    /*
+    Sample output
+        User : Sanjeev
+        Invoice Id fcf73137-2233-4b94-a51f-7193200dc438
+        Service : DUBBING
+        Resource : API_RESOURCE cost 16.380
+        Service cost 16.380
+        Total cost 16.380
+
+        User : Ashok
+        Invoice Id e202dfe9-00b8-4e2c-906a-584da97dfa6d
+        Service : TRANSLATION
+        Resource : STORAGE_RESOURCE cost 250.000
+        Service cost 250.000
+        Service : TRANSCRIPTION
+        Resource : TOKEN_RESOURCE cost 408.000
+        Resource : API_RESOURCE cost 1021.080
+        Resource : STORAGE_RESOURCE cost 389.440
+        Service cost 1818.520
+        Total cost 2068.520
+     */
+
 
 
     static void main() {
