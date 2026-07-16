@@ -16,94 +16,20 @@ import java.math.BigDecimal;
 public class Main {
 
     /*
-    usage billing system
-    multiple users
-    service specific pricing model
-    generate invoice -> input param - user ,start , end
-    usage tracking per user , per service, per resource
-     */
-
-
-    /*
-    Flow
-    User->use some resource of some service
-    usage event
-    store usage event
-    get invoice ->userId , startTime, endtime
-    fetch all service , all resource, in loop from start -end time
-    fetch usage ,
-    fetch billing type per for resourcse/service
-    compute bill for each service/resource
-    generate invoice
-
-     */
-
-    /*
-    entities
-    User
-    service -> billing method
-    resource
-    Usage event ->
-    some service to fetch usage per user from start ,end time
-    some service to compute overall usage and apply billing
-    Aggregate usage object to pass, can use Generic Object to implement usage specific details
-    billing interface
-    payPerUsage implement billing
-    flat implement billing
-    invoice ->resource line item ->per service subtotal ->total
-     */
-
-
-    /*
-    to take care
-    how to design the usage key so that finding usage per user
-    per service per resource could be easy -> user+service+resource+time+UUID - so that it can be fetched
-    where to store usage event inside user or single separate usage table something
-    can each service multiple pricing model or one pricing model
-    amount should be in exact decimal upto certain digits
-    pricing configuration/external  -> per unit charge, unit, flat charge everything should be configurable
-    can add configuration file?
-    design data storage in such a way that it can be swapped with actual DB, right now in-memory is allowed
-    usage event can be in any order , what does it mean how it impact my design?
-    tier billing can be done using chain of responsibilty
-    how to make amount to be precies upto 3 decimal place
-    how to show services/resources in invoice, simple service type and list of resource with amount or proper objects
-     */
-
-    /*
-    negative cases
-    do we need factory?
-    do we need singleton? yes
-
-     */
-
-    /*
-    assumption
-    user provided time is in long systemtime milli second
+    Assumptions
+    user provided time is in long systemTime milli Seconds
     assumption pricing could be different for a same resource under different services
-    assumption calculate bill with new price when price changes
-     */
-
-    /*
-    Decision-making
-    running code with driven example
-    3 service covering all three mode of payment
-    clear separation btwn ->usage ingestion, the pricing strategy layer, and invoice assembly.
+    what if the price change later usage have been done and compute billing with new price or old price ,assumption calculate bill with new price when price changes
      */
 
 
     /*
-    doubts
-    why not enum why service class -> than we need to add if else condition
-    why not creating class implementation for each service , why pick creating object of simple class
-    if so than why resource are like class implementation not enum
-    problem with resource class is if new pricing model introduced then we need to update the rate in the class object
-    but i don't want to add if else condition in my pricing class to decide which resource and which rate to pick
-    i will pass the details in the function
-    what if the price change later usage have been done and compute billing with new price or old price
-    i want to show few details of service and resource to user but don't want let the user to make changes or get all the details
-   ,should i build new class
+    could have been done / scope of improvement
+    tier billing can be done using chain of responsibility
      */
+
+
+
     static void main() {
 
         PricingConfigLoader config = new PricingConfigLoader("pricing.properties");
