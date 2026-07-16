@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.configurations.PaymentConfiguration;
+import org.example.configurations.PricingConfigLoader;
 import org.example.entities.*;
 import org.example.entities.pricing.FlatBill;
 import org.example.entities.pricing.SubscriptionBill;
@@ -106,6 +106,8 @@ public class Main {
      */
     static void main() {
 
+        PricingConfigLoader config = new PricingConfigLoader("pricing.properties");
+
         //create storage repository
         LocalStorage localStorage = new LocalStorage();
 
@@ -113,17 +115,17 @@ public class Main {
         BillingManager billingManager =  BillingManager.getBillingManager(localStorage);
 
         //create Resources
-        Resource dubbingAPIResource = new Resource(new FlatBill(PaymentConfiguration.DubbingFlatCharge) , ResourceType.API_RESOURCE);
+        Resource dubbingAPIResource = new Resource(new FlatBill(config.getDecimal("dubbing.flat.ratePerUnit")) , ResourceType.API_RESOURCE);
 
 
-        Resource translationStorageResource = new Resource(new SubscriptionBill(PaymentConfiguration.TranslationSubscriptionFixCharge,
-                PaymentConfiguration.TranslationSubscriptionFixAmount, PaymentConfiguration.TranslationSubscriptionUnitCot), ResourceType.STORAGE_RESOURCE);
+        Resource translationStorageResource = new Resource(new SubscriptionBill(config.getDecimal("translation.subscription.fixPrice"),
+                config.getDecimal("translation.subscription.fixAllowedQuantity"), config.getDecimal("translation.subscription.perUnitRate")), ResourceType.STORAGE_RESOURCE);
 
-        Resource transcriptiontokenResource = new Resource( new TierBill(PaymentConfiguration.TranscriptionTierPrice,
-                PaymentConfiguration.TranscriptionTierAmountUnit), ResourceType.TOKEN_RESOURCE);
-        Resource transcriptionApiResource = new Resource(new FlatBill(PaymentConfiguration.TranscriptionFlatCharge), ResourceType.API_RESOURCE);
-        Resource transcriptionStorageResource = new Resource(new SubscriptionBill(PaymentConfiguration.TranscriptionSubscriptionFixCharge,
-                PaymentConfiguration.TranscriptionSubscriptionFixAmount, PaymentConfiguration.TranscriptionSubscriptionUnitCot), ResourceType.STORAGE_RESOURCE);
+        Resource transcriptiontokenResource = new Resource( new TierBill(config.getDecimalList("transcription.tier.prices"),
+                config.getDecimalList("transcription.tier.amounts")), ResourceType.TOKEN_RESOURCE);
+        Resource transcriptionApiResource = new Resource(new FlatBill(config.getDecimal("transcription.flat.ratePerUnit")), ResourceType.API_RESOURCE);
+        Resource transcriptionStorageResource = new Resource(new SubscriptionBill(config.getDecimal("transcription.subscription.fixPrice"),
+                config.getDecimal("transcription.subscription.fixAllowedQuantity"), config.getDecimal("transcription.subscription.perUnitRate")), ResourceType.STORAGE_RESOURCE);
 
 
         //create Service
